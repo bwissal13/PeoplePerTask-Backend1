@@ -1,7 +1,40 @@
 
 
    <?php 
-   include "./database/conex.php"?> 
+   include "./database/conex.php";
+   $query = "SELECT CategoryName FROM categories";
+$result = mysqli_query($conn, $query);
+if (!$result) {
+    die("Error in SQL query: " . mysqli_error($conn) . "<br>Query: " . $query);
+}
+$categories = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $categories[] = $row['CategoryName'];
+}
+mysqli_free_result($result);
+$query = "SELECT UserName FROM users";
+$result = mysqli_query($conn, $query);
+if (!$result) {
+    die("Error in SQL query: " . mysqli_error($conn) . "<br>Query: " . $query);
+}
+$usernames = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $usernames[] = $row['UserName'];
+}
+mysqli_free_result($result);
+
+$query = "SELECT SousCategoryName FROM souscategories";
+$result = mysqli_query($conn, $query);
+if (!$result) {
+    die("Error in SQL query: " . mysqli_error($conn) . "<br>Query: " . $query);
+}
+$souscategories = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $souscategories[] = $row['SousCategoryName'];
+}
+mysqli_free_result($result);
+   
+   ?> 
     
     <!DOCTYPE html>
     <html lang="en">
@@ -59,7 +92,43 @@
                 <label for="Name" style="font-size: 12px;" class="form-label">Project Title</label>
                 <input type="text" style="width: 100%;" class="form-control border-bottom border-0 border" id="Name" name="Title" value=""  aria-describedby="emailHelp">
             </div>
-        
+            <div>
+                <label for="Name" style="font-size: 12px;" class="form-label">User Name</label>
+                <select class="form-select border-bottom border-0 border mb-5" aria-label="Default select example" name="username">
+                    <option selected disabled>User Name</option>
+                    <?php
+                    foreach ($usernames as $username) {
+                     echo "<option value=$username>$username</option>";
+                   }
+                                           
+                    ?>
+                </select>
+            </div>
+
+            
+            <div>
+                <label for="Name" style="font-size: 12px;" class="form-label">Category Name</label>
+                <select class="form-select border-bottom border-0 border mb-5" aria-label="Default select example" name="category">
+                    <option selected disabled>Category Name</option>
+                    <?php
+                        foreach ($categories as $categoryName) {
+                            echo "<option value='$categoryName'>$categoryName</option>";
+                        }
+                    ?>
+                </select>
+            </div>
+
+            <div>
+                <label for="Name" style="font-size: 12px;" class="form-label">Sous Category Name</label>
+                <select class="form-select border-bottom border-0 border mb-5" aria-label="Default select example" name="SousCategoryName">
+                    <option selected disabled>Sous Category Name</option>
+                    <?php
+                        foreach ($souscategories as $souscategoryName) {
+                            echo "<option value='$souscategoryName'>$souscategoryName</option>";
+                        }
+                    ?>
+                </select>
+            </div>
             <button type="submit" class="btn text-white rounded-pill btn-outline-primary" style="background-color: #3498DB; width:164px; height:39px" id="edit" name= "submit">Add</button>
         </form>
     </div>
